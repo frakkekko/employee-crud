@@ -3,8 +3,12 @@ package com.luv2code.cruddemo.controller;
 import com.luv2code.cruddemo.exception.custom.EmployeeNotFoundException;
 import com.luv2code.cruddemo.model.Employee;
 import com.luv2code.cruddemo.DAO.impl.EmployeeDAOImpl;
+import com.luv2code.cruddemo.model.response.EmployeeSuccessResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,39 +25,58 @@ public class EmployeeRestController {
     }
 
     @GetMapping("/employee")
-    public List<Employee> getEmployees() {
-        return employeeDAOImpl.getAllEmployees();
+    public HttpEntity<EmployeeSuccessResponse> getEmployees() {
+        List<Employee> employeeList = employeeDAOImpl.getAllEmployees();
+        EmployeeSuccessResponse<List<Employee>> response = new EmployeeSuccessResponse<>(HttpStatus.OK.value(), HttpMethod.GET, employeeList)
+;        return new HttpEntity<>(response);
     }
 
     @PostMapping(value = "/employee", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void postEmployee(@Valid @RequestBody Employee employee) {
+    public HttpEntity<EmployeeSuccessResponse> postEmployee(@Valid @RequestBody Employee employee) {
         employeeDAOImpl.add(employee);
+        EmployeeSuccessResponse<Employee> response = new EmployeeSuccessResponse<>(HttpStatus.CREATED.value(), HttpMethod.POST, employee);
+        return new HttpEntity<>(response);
     }
 
     @GetMapping("/employee/{employeeId}")
-    public Employee getEmployees(@PathVariable int employeeId) {
+    public HttpEntity<EmployeeSuccessResponse> getEmployees(@PathVariable int employeeId) {
         Employee employeeFound = employeeDAOImpl.getEmployee(employeeId);
 
         if(employeeFound == null) {
             throw new EmployeeNotFoundException("Employee with id " + employeeId + " not found");
         }
 
-        return employeeFound;
+        EmployeeSuccessResponse<Employee> response = new EmployeeSuccessResponse<>(HttpStatus.OK.value(), HttpMethod.GET, employeeFound);
+
+        return new HttpEntity<>(response);
     }
 
     @PutMapping("/employee/{employeeId}")
-    public void updateEmployee(@PathVariable long employeeId, @Valid @RequestBody Employee employee){
+    public HttpEntity<EmployeeSuccessResponse> updateEmployee(@PathVariable long employeeId, @Valid @RequestBody Employee employee){
         Employee employeeFound = employeeDAOImpl.getEmployee(employeeId);
 
         if(employeeFound == null) {
             throw new EmployeeNotFoundException("Employee with id " + employeeId + " not found");
         }
-        
+
         employeeDAOImpl.update(employeeId, employee);
+        Employee employeeUpdated = employeeDAOImpl.getEmployee(employeeId);
+
+        EmployeeSuccessResponse<Employee> response = new EmployeeSuccessResponse<>(HttpStatus.OK.value(), HttpMethod.PUT, employeeUpdated);
+
+        return new HttpEntity<>(response);
     }
 
     @DeleteMapping("/employee/{employeeId}")
-    public void deleteEmployeeById(@PathVariable int employeeId){
+    public HttpEntity<EmployeeSuccessResponse> deleteEmployeeById(@PathVariable int employeeId){
+        Employee employeeFound = employeeDAOImpl.getEmployee(employeeId);
+
+        if(employeeFound == null) {
+            throw new EmployeeNotFoundException("Employee with id " + employeeId + " not found");
+        }
+
         employeeDAOImpl.delete(employeeId);
+        EmployeeSuccessResponse<Employee> response = new EmployeeSuccessResponse<>(HttpStatus.OK.value(), HttpMethod.DELETE, employeeFound);
+        return new HttpEntity<>(response);
     }
 }

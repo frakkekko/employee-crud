@@ -1,7 +1,7 @@
 package com.luv2code.cruddemo.exception;
 
 import com.luv2code.cruddemo.exception.custom.EmployeeNotFoundException;
-import com.luv2code.cruddemo.exception.entity.EmployeeExceptionResponse;
+import com.luv2code.cruddemo.exception.model.EmployeeExceptionResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

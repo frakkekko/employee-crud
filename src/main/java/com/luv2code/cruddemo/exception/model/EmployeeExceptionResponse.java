@@ -1,4 +1,4 @@
-package com.luv2code.cruddemo.exception.entity;
+package com.luv2code.cruddemo.exception.model;
 
 public class EmployeeExceptionResponse {
     private long timeStamp;
