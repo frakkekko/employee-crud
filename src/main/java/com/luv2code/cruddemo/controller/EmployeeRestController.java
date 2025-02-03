@@ -6,10 +6,7 @@ import com.luv2code.cruddemo.service.EmployeeService;
 import com.luv2code.cruddemo.util.EmployeeResponseWrapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -24,32 +21,32 @@ public class EmployeeRestController {
     }
 
     @GetMapping("/employee")
-    public HttpEntity<EmployeeSuccessResponse<List<Employee>>> getEmployees() {
+    public ResponseEntity<EmployeeSuccessResponse<List<Employee>>> getEmployees() {
         List<Employee> employeeList = employeeService.getAll();
-;        return EmployeeResponseWrapper.buildResponse(HttpStatus.OK.value(), HttpMethod.GET, employeeList);
+;        return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.GET, employeeList);
     }
 
     @PostMapping(value = "/employee", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity<EmployeeSuccessResponse<Employee>> postEmployee(@Valid @RequestBody Employee employee) {
+    public ResponseEntity<EmployeeSuccessResponse<Employee>> postEmployee(@Valid @RequestBody Employee employee) {
         employeeService.add(employee);
-        return EmployeeResponseWrapper.buildResponse(HttpStatus.CREATED.value(), HttpMethod.POST, employee);
+        return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.CREATED, HttpMethod.POST, employee);
     }
 
     @GetMapping("/employee/{employeeId}")
-    public HttpEntity<EmployeeSuccessResponse<Employee>> getEmployee(@PathVariable int employeeId) {
+    public ResponseEntity<EmployeeSuccessResponse<Employee>> getEmployee(@PathVariable int employeeId) {
         Employee employeeFound = employeeService.getById(employeeId);
-        return EmployeeResponseWrapper.buildResponse(HttpStatus.OK.value(), HttpMethod.GET, employeeFound);
+        return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.GET, employeeFound);
     }
 
     @PutMapping("/employee/{employeeId}")
-    public HttpEntity<EmployeeSuccessResponse<Employee>> updateEmployee(@PathVariable long employeeId, @Valid @RequestBody Employee employee){
+    public ResponseEntity<EmployeeSuccessResponse<Employee>> updateEmployee(@PathVariable long employeeId, @Valid @RequestBody Employee employee){
         Employee employeeUpdated = employeeService.update(employeeId, employee);
-        return EmployeeResponseWrapper.buildResponse(HttpStatus.OK.value(), HttpMethod.PUT, employeeUpdated);
+        return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.PUT, employeeUpdated);
     }
 
     @DeleteMapping("/employee/{employeeId}")
-    public HttpEntity<EmployeeSuccessResponse<Employee>> deleteEmployeeById(@PathVariable int employeeId){
+    public ResponseEntity<EmployeeSuccessResponse<Employee>> deleteEmployeeById(@PathVariable int employeeId){
         Employee employeeDeleted = employeeService.delete(employeeId);
-        return EmployeeResponseWrapper.buildResponse(HttpStatus.OK.value(), HttpMethod.DELETE, employeeDeleted);
+        return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.DELETE, employeeDeleted);
     }
 }
