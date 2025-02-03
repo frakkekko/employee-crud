@@ -1,7 +1,7 @@
 package com.luv2code.cruddemo.DAO.impl;
 
-import com.luv2code.cruddemo.model.Employee;
 import com.luv2code.cruddemo.DAO.EmployeeDAO;
+import com.luv2code.cruddemo.model.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
