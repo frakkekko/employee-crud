@@ -6,6 +6,7 @@ import com.luv2code.cruddemo.model.Employee;
 import com.luv2code.cruddemo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeFound;
     }
 
+    @Transactional
     @Override
     public void add(Employee employee) {
         employeeDAO.add(employee);
@@ -49,6 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDAO.update(id, employee);
     }
 
+    @Transactional
     @Override
     public Employee delete(long id) {
         Employee employeeFound = employeeDAO.getEmployee(id);
