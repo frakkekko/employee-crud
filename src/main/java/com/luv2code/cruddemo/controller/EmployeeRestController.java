@@ -20,7 +20,7 @@ public class EmployeeRestController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employee")
+    @GetMapping(value = "/employee", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeSuccessResponse<List<Employee>>> getEmployees() {
         List<Employee> employeeList = employeeService.getAll();
 ;        return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.GET, employeeList);
@@ -32,19 +32,19 @@ public class EmployeeRestController {
         return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.CREATED, HttpMethod.POST, employee);
     }
 
-    @GetMapping("/employee/{id}")
+    @GetMapping(value = "/employee/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeSuccessResponse<Employee>> getEmployee(@PathVariable int id) {
         Employee employeeFound = employeeService.getById(id);
         return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.GET, employeeFound);
     }
 
-    @PutMapping("/employee/{id}")
+    @PutMapping(value = "/employee/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeSuccessResponse<Employee>> updateEmployee(@PathVariable long id, @Valid @RequestBody Employee employee){
         Employee employeeUpdated = employeeService.update(id, employee);
         return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.PUT, employeeUpdated);
     }
 
-    @DeleteMapping("/employee/{id}")
+    @DeleteMapping(value = "/employee/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeSuccessResponse<Employee>> deleteEmployeeById(@PathVariable int id){
         Employee employeeDeleted = employeeService.delete(id);
         return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.DELETE, employeeDeleted);
