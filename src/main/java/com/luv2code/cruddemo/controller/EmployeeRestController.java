@@ -32,21 +32,21 @@ public class EmployeeRestController {
         return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.CREATED, HttpMethod.POST, employee);
     }
 
-    @GetMapping("/employee/{employeeId}")
-    public ResponseEntity<EmployeeSuccessResponse<Employee>> getEmployee(@PathVariable int employeeId) {
-        Employee employeeFound = employeeService.getById(employeeId);
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<EmployeeSuccessResponse<Employee>> getEmployee(@PathVariable int id) {
+        Employee employeeFound = employeeService.getById(id);
         return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.GET, employeeFound);
     }
 
-    @PutMapping("/employee/{employeeId}")
-    public ResponseEntity<EmployeeSuccessResponse<Employee>> updateEmployee(@PathVariable long employeeId, @Valid @RequestBody Employee employee){
-        Employee employeeUpdated = employeeService.update(employeeId, employee);
+    @PutMapping("/employee/{id}")
+    public ResponseEntity<EmployeeSuccessResponse<Employee>> updateEmployee(@PathVariable long id, @Valid @RequestBody Employee employee){
+        Employee employeeUpdated = employeeService.update(id, employee);
         return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.PUT, employeeUpdated);
     }
 
-    @DeleteMapping("/employee/{employeeId}")
-    public ResponseEntity<EmployeeSuccessResponse<Employee>> deleteEmployeeById(@PathVariable int employeeId){
-        Employee employeeDeleted = employeeService.delete(employeeId);
+    @DeleteMapping("/employee/{id}")
+    public ResponseEntity<EmployeeSuccessResponse<Employee>> deleteEmployeeById(@PathVariable int id){
+        Employee employeeDeleted = employeeService.delete(id);
         return EmployeeResponseWrapper.buildSuccessResponse(HttpStatus.OK, HttpMethod.DELETE, employeeDeleted);
     }
 }

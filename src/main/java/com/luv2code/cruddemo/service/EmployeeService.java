@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface EmployeeService {
     List<Employee> getAll();
-    Employee getById(long employeeId);
+    Employee getById(long id);
     void add(Employee employee);
-    Employee update(long employeeId, Employee employee);
-    Employee delete(long employeeId);
+    Employee update(long id, Employee employee);
+    Employee delete(long id);
 
 }

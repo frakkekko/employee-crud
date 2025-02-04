@@ -34,14 +34,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     @Transactional
-    public void update(long employeeId, Employee employee) {
+    public Employee update(long employeeId, Employee employee) {
         Employee exsistingEmployee = entityManager.find(Employee.class, employeeId);
 
         exsistingEmployee.setFirstName(employee.getFirstName());
         exsistingEmployee.setLastName(employee.getLastName());
         exsistingEmployee.setEmail(employee.getEmail());
 
-        entityManager.merge(exsistingEmployee);
+        return entityManager.merge(exsistingEmployee);
     }
 
     @Override

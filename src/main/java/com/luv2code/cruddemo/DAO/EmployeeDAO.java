@@ -9,7 +9,7 @@ import java.util.List;
 public interface EmployeeDAO {
     void add(Employee employee);
     void delete(long employeeId);
-    void update(long employeeId, Employee employee);
+    Employee update(long employeeId, Employee employee);
     Employee getEmployee(long employeeId);
     List<Employee> getAllEmployees();
 }

@@ -24,11 +24,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getById(long employeeId) {
-        Employee employeeFound = employeeDAO.getEmployee(employeeId);
+    public Employee getById(long id) {
+        Employee employeeFound = employeeDAO.getEmployee(id);
 
         if(employeeFound == null) {
-            throw new EmployeeNotFoundException("Employee with id " + employeeId + " not found");
+            throw new EmployeeNotFoundException("Employee with id " + id + " not found");
         }
         return employeeFound;
     }
@@ -39,26 +39,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee update(long employeeId, Employee employee) {
-        Employee employeeFound = employeeDAO.getEmployee(employeeId);
+    public Employee update(long id, Employee employee) {
+        Employee employeeFound = employeeDAO.getEmployee(id);
 
         if(employeeFound == null) {
-            throw new EmployeeNotFoundException("Employee with id " + employeeId + " not found");
+            throw new EmployeeNotFoundException("Employee with id " + id + " not found");
         }
 
-        employeeDAO.update(employeeId, employee);
-        return employeeDAO.getEmployee(employeeId);
+        return employeeDAO.update(id, employee);
     }
 
     @Override
-    public Employee delete(long employeeId) {
-        Employee employeeFound = employeeDAO.getEmployee(employeeId);
+    public Employee delete(long id) {
+        Employee employeeFound = employeeDAO.getEmployee(id);
 
         if(employeeFound == null) {
-            throw new EmployeeNotFoundException("Employee with id " + employeeId + " not found");
+            throw new EmployeeNotFoundException("Employee with id " + id + " not found");
         }
 
-        employeeDAO.delete(employeeId);
+        employeeDAO.delete(id);
 
         return employeeFound;
     }
