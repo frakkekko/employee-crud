@@ -1,67 +1,65 @@
 package com.luv2code.cruddemo.service.impl;
 
-import com.luv2code.cruddemo.DAO.EmployeeDAO;
+import com.luv2code.cruddemo.DAO.EmployeeRepository;
 import com.luv2code.cruddemo.exception.custom.EmployeeNotFoundException;
 import com.luv2code.cruddemo.model.Employee;
 import com.luv2code.cruddemo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private EmployeeDAO employeeDAO;
+    private EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeDAO employeeDAO){
-        this.employeeDAO = employeeDAO;
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository){
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public List<Employee> getAll() {
-        return employeeDAO.getAllEmployees();
+        return employeeRepository.findAll();
     }
 
     @Override
     public Employee getById(long id) {
-        Employee employeeFound = employeeDAO.getEmployee(id);
+        Optional<Employee> employeeFound = employeeRepository.findById(id);
 
-        if(employeeFound == null) {
+        if(!employeeFound.isPresent()) {
             throw new EmployeeNotFoundException("Employee with id " + id + " not found");
         }
-        return employeeFound;
+        return employeeFound.get();
     }
 
-    @Transactional
     @Override
     public void add(Employee employee) {
-        employeeDAO.add(employee);
+        employeeRepository.save(employee);
     }
 
     @Override
     public Employee update(long id, Employee employee) {
-        Employee employeeFound = employeeDAO.getEmployee(id);
+        Optional<Employee> employeeFound = employeeRepository.findById(id);
 
-        if(employeeFound == null) {
+        if(!employeeFound.isPresent()) {
             throw new EmployeeNotFoundException("Employee with id " + id + " not found");
         }
 
-        return employeeDAO.update(id, employee);
+        employee.setId(employeeFound.get().getId());
+        return employeeRepository.save(employee);
     }
 
-    @Transactional
     @Override
     public Employee delete(long id) {
-        Employee employeeFound = employeeDAO.getEmployee(id);
+        Optional<Employee> employeeFound = employeeRepository.findById(id);
 
-        if(employeeFound == null) {
+        if(!employeeFound.isPresent()) {
             throw new EmployeeNotFoundException("Employee with id " + id + " not found");
         }
 
-        employeeDAO.delete(id);
+        employeeRepository.delete(employeeFound.get());
 
-        return employeeFound;
+        return employeeFound.get();
     }
 }
